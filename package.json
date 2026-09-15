@@ -1,0 +1,17 @@
+{
+  "name": "matchless-corporate-gifting",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Matchless Corporate Gifting - premium corporate gifting catalogue and enquiry website.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "15.5.4",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  }
+}
