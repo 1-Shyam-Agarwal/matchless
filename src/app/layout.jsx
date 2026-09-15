@@ -75,7 +75,14 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+    /* suppressHydrationWarning: the inline script below adds the `js` class to
+       <html> before React hydrates, so the class attribute legitimately differs
+       from what the server sent. Scoped to this element only. */
+    <html
+      lang="en"
+      className={`${inter.variable} ${jakarta.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         {/* Marks the document as script-enabled before first paint. Scroll
             reveal only hides content when this class is present, so the site
