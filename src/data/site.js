@@ -29,12 +29,12 @@ export const contact = {
      phone        : how the number is shown on screen
      phoneE164    : the same number for tel: links, digits only with country
                     code, e.g. '+919876543210'. Leave '' if not ready.       */
-  phone: '[ADD PHONE NUMBER]',
-  phoneE164: '',
+  phone: '+91-9311161298',
+  phoneE164: '+919311161298',
 
   /* --- WhatsApp ----------------------------------------------------------
      Digits only, country code first, NO plus sign. e.g. '919876543210'      */
-  whatsappE164: '',
+  whatsappE164: '919311161298',
 
   /* --- Email ------------------------------------------------------------ */
   email: 'agarwalshyam.official@gmail.com',
