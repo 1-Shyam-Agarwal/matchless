@@ -41,7 +41,7 @@ export const contact = {
 
   /* --- Where you operate from ------------------------------------------- */
   location: 'Laxmi Nagar, Delhi',
-  addressLines: ['F-232 Mangal Bazar Road', 'Laxmi Nagar, Delhi - 11092']
+  addressLines: ['F-232 Mangal Bazar Road', 'Laxmi Nagar, Delhi - 11092'],
 
   /* --- When you are reachable ------------------------------------------- */
   hours: '[ADD BUSINESS HOURS]',
