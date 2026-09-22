@@ -37,11 +37,11 @@ export const contact = {
   whatsappE164: '',
 
   /* --- Email ------------------------------------------------------------ */
-  email: '[ADD EMAIL ADDRESS]',
+  email: 'agarwalshyam.official@gmail.com',
 
   /* --- Where you operate from ------------------------------------------- */
-  location: '[ADD CITY / LOCATION]',
-  addressLines: [], // e.g. ['Unit 12, Example Business Park', 'New Delhi 110001']
+  location: 'Laxmi Nagar, Delhi',
+  addressLines: ['F-232 Mangal Bazar Road', 'Laxmi Nagar, Delhi - 11092']
 
   /* --- When you are reachable ------------------------------------------- */
   hours: '[ADD BUSINESS HOURS]',

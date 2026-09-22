@@ -1,41 +1,47 @@
 /* ==========================================================================
    MATCHLESS CORPORATE GIFTING — DESIGN SYSTEM
    Tokens, base styles and reusable component classes.
-   Brand colours are derived from the logo: deep navy, warm gold, warm cream.
+   Brand: deep navy + warm gold, set on cool neutral surfaces with generous
+   radii, soft elevation and gradient accents.
    ========================================================================== */
 
 /* ---------------------------------------------------------------- 1. TOKENS */
 :root {
   /* Brand — navy */
-  --navy-900: #0d1728;
-  --navy-800: #15233f; /* logo navy */
-  --navy-700: #1e3054;
-  --navy-600: #2c4370;
-  --navy-500: #45598a;
+  --navy-900: #0a1226;
+  --navy-800: #13203a; /* logo navy */
+  --navy-700: #1d2f52;
+  --navy-600: #2a4271;
+  --navy-500: #435b8c;
 
   /* Brand — gold */
-  --gold-600: #8f5d1c; /* small-text gold: 4.97:1 on cream, 5.6:1 on white */
+  --gold-700: #7d5010;
+  --gold-600: #96601a; /* small-text gold: 5.3:1 on white */
   --gold-500: #c68b3c;
-  --gold-400: #d9a353; /* logo gold */
-  --gold-300: #e8be80;
-  --gold-200: #f2dcbc;
+  --gold-400: #e0ad55; /* logo gold */
+  --gold-300: #f0cb8e;
+  --gold-200: #f8e7c8;
 
-  /* Neutrals */
+  /* Neutrals — cool, so the gold reads as the only warm note */
   --white: #ffffff;
-  --cream: #faf7f1;
-  --cream-100: #f5f1e8;
-  --cream-200: #ece6d9;
-  --line: #e3ddd0;
-  --line-soft: #efeade;
-  --charcoal: #2f3541;
-  --ink: #1c2230;
-  --muted: #666e7e;
-  --muted-light: #737b8b; /* 4.26:1 on white — placeholders stay legible */
+  --cream: #f6f7fb; /* section alt surface */
+  --cream-100: #eef1f7;
+  --cream-200: #e3e8f1;
+  --line: #e0e5ef;
+  --line-soft: #edf0f6;
+  --charcoal: #39414f;
+  --ink: #131a29;
+  --muted: #5f6879;
+  --muted-light: #737c8d; /* 4.5:1 on white — placeholders stay legible */
 
   /* Surfaces */
   --surface: var(--white);
   --surface-alt: var(--cream);
   --surface-dark: var(--navy-800);
+
+  /* Gradients */
+  --grad-gold: linear-gradient(135deg, #f2c470 0%, #e0ad55 45%, #c68b3c 100%);
+  --grad-navy: linear-gradient(145deg, #1a2c4f 0%, #111d33 55%, #0a1226 100%);
 
   /* Type */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
@@ -44,25 +50,29 @@
     system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
 
   /* Spacing / layout */
-  --container: 1240px;
-  --container-narrow: 880px;
+  --container: 1280px;
+  --container-narrow: 900px;
   --gutter: 24px;
-  --section-y: clamp(64px, 8vw, 112px);
+  --section-y: clamp(68px, 8vw, 120px);
 
-  /* Radius — used sparingly; this is a corporate brand, not a consumer app */
-  --r-sm: 2px;
-  --r-md: 4px;
-  --r-lg: 8px;
+  /* Radius — generous; the single biggest shift away from the old look */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 32px;
+  --r-pill: 999px;
 
-  /* Elevation */
-  --shadow-sm: 0 1px 2px rgba(21, 35, 63, 0.05),
-    0 2px 8px rgba(21, 35, 63, 0.04);
-  --shadow-md: 0 2px 4px rgba(21, 35, 63, 0.05),
-    0 12px 28px rgba(21, 35, 63, 0.08);
-  --shadow-lg: 0 4px 10px rgba(21, 35, 63, 0.06),
-    0 24px 60px rgba(21, 35, 63, 0.12);
+  /* Elevation — wide and soft rather than tight and dark */
+  --shadow-sm: 0 1px 2px rgba(19, 32, 58, 0.04),
+    0 4px 14px rgba(19, 32, 58, 0.05);
+  --shadow-md: 0 2px 6px rgba(19, 32, 58, 0.05),
+    0 18px 40px rgba(19, 32, 58, 0.09);
+  --shadow-lg: 0 6px 16px rgba(19, 32, 58, 0.07),
+    0 36px 80px rgba(19, 32, 58, 0.16);
+  --shadow-gold: 0 10px 28px rgba(198, 139, 60, 0.32);
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --header-h: 84px;
 }
 
@@ -119,26 +129,28 @@ h4,
 h5 {
   font-family: var(--font-display);
   color: var(--navy-800);
-  font-weight: 700;
-  letter-spacing: -0.021em;
-  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  line-height: 1.12;
   margin: 0 0 0.5em;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(2.15rem, 1.3rem + 3.4vw, 3.4rem);
+  font-size: clamp(2.25rem, 1.3rem + 3.8vw, 3.75rem);
 }
 h2 {
-  font-size: clamp(1.75rem, 1.15rem + 2.3vw, 2.6rem);
+  font-size: clamp(1.85rem, 1.15rem + 2.6vw, 2.9rem);
 }
 h3 {
   font-size: clamp(1.2rem, 1.05rem + 0.7vw, 1.5rem);
-  letter-spacing: -0.012em;
+  font-weight: 700;
+  letter-spacing: -0.018em;
 }
 h4 {
   font-size: 1.0625rem;
-  letter-spacing: -0.006em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 p {
@@ -197,7 +209,7 @@ hr {
   background: var(--navy-800);
   color: var(--white);
   padding: 12px 20px;
-  border-radius: var(--r-md);
+  border-radius: var(--r-pill);
   font-weight: 600;
   transition: top 0.2s var(--ease);
 }
@@ -233,13 +245,14 @@ hr {
   padding-block: var(--section-y);
 }
 .section--tight {
-  padding-block: clamp(48px, 5.5vw, 76px);
+  padding-block: clamp(48px, 5.5vw, 80px);
 }
 .section--alt {
   background: var(--surface-alt);
 }
 .section--navy {
-  background: var(--navy-800);
+  position: relative;
+  background: var(--grad-navy);
   color: rgba(255, 255, 255, 0.78);
 }
 .section--navy h1,
@@ -287,31 +300,48 @@ hr {
 }
 
 /* --------------------------------------------------------- 4. TYPE HELPERS */
+/* Eyebrow is a pill chip now — reads as a UI label, not a letterpress caption.
+   Block-level `flex` + `width: fit-content` rather than `inline-flex`: an
+   inline-level box would swallow its own bottom margin and jam the chip
+   against the heading below it. */
 .eyebrow {
   display: flex;
+  width: fit-content;
   align-items: center;
-  gap: 12px;
+  gap: 9px;
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold-600);
-  margin: 0 0 18px;
+  color: var(--gold-700);
+  background: linear-gradient(
+    135deg,
+    rgba(224, 173, 85, 0.2) 0%,
+    rgba(224, 173, 85, 0.08) 100%
+  );
+  border: 1px solid rgba(198, 139, 60, 0.26);
+  border-radius: var(--r-pill);
+  padding: 7px 16px 7px 12px;
+  margin: 0 0 20px;
+  line-height: 1;
 }
 .eyebrow::before {
   content: '';
-  width: 28px;
-  height: 1px;
-  background: var(--gold-400);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grad-gold);
   flex: none;
 }
 .eyebrow--center {
-  justify-content: center;
+  margin-inline: auto;
 }
 .section--navy .eyebrow,
 .on-dark .eyebrow {
   color: var(--gold-300);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(240, 203, 142, 0.28);
 }
 
 .lead {
@@ -325,8 +355,8 @@ hr {
 }
 
 .section-head {
-  max-width: 760px;
-  margin-bottom: clamp(36px, 4vw, 56px);
+  max-width: 780px;
+  margin-bottom: clamp(36px, 4vw, 60px);
 }
 .section-head--center {
   margin-inline: auto;
@@ -335,9 +365,10 @@ hr {
 
 .gold-rule {
   width: 56px;
-  height: 2px;
-  background: var(--gold-400);
+  height: 3px;
+  background: var(--grad-gold);
   border: 0;
+  border-radius: var(--r-pill);
   margin: 0 0 26px;
 }
 .gold-rule--center {
@@ -349,31 +380,32 @@ hr {
   --btn-bg: var(--navy-800);
   --btn-fg: var(--white);
   --btn-bd: var(--navy-800);
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 15px 28px;
-  min-height: 52px;
+  padding: 16px 30px;
+  min-height: 54px;
   font-family: var(--font-display);
-  font-size: 0.94rem;
-  font-weight: 600;
-  letter-spacing: 0.012em;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.005em;
   line-height: 1;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   border: 1px solid var(--btn-bd);
-  border-radius: var(--r-md);
+  border-radius: var(--r-pill);
   background: var(--btn-bg);
   color: var(--btn-fg);
-  transition: background-color 0.22s var(--ease), color 0.22s var(--ease),
-    border-color 0.22s var(--ease), transform 0.22s var(--ease),
-    box-shadow 0.22s var(--ease);
+  transition: background-color 0.24s var(--ease), color 0.24s var(--ease),
+    border-color 0.24s var(--ease), transform 0.24s var(--ease-out),
+    box-shadow 0.24s var(--ease), filter 0.24s var(--ease);
 }
 .btn:hover {
   color: var(--btn-fg);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 .btn:active {
@@ -381,16 +413,21 @@ hr {
 }
 .btn svg {
   flex: none;
+  transition: transform 0.24s var(--ease-out);
+}
+.btn:hover svg {
+  transform: translateX(3px);
 }
 
 .btn--gold {
-  --btn-bg: var(--gold-400);
-  --btn-bd: var(--gold-400);
-  --btn-fg: var(--navy-800);
+  --btn-bd: transparent;
+  --btn-fg: var(--navy-900);
+  background: var(--grad-gold);
+  box-shadow: 0 6px 18px rgba(198, 139, 60, 0.26);
 }
 .btn--gold:hover {
-  --btn-bg: var(--gold-300);
-  --btn-bd: var(--gold-300);
+  filter: brightness(1.06);
+  box-shadow: var(--shadow-gold);
 }
 
 .btn--navy:hover {
@@ -399,9 +436,9 @@ hr {
 }
 
 .btn--outline {
-  --btn-bg: transparent;
+  --btn-bg: var(--white);
   --btn-fg: var(--navy-800);
-  --btn-bd: var(--line);
+  --btn-bd: var(--cream-200);
 }
 .btn--outline:hover {
   --btn-bd: var(--navy-800);
@@ -410,9 +447,9 @@ hr {
 }
 
 .btn--outline-light {
-  --btn-bg: transparent;
+  --btn-bg: rgba(255, 255, 255, 0.06);
   --btn-fg: var(--white);
-  --btn-bd: rgba(255, 255, 255, 0.34);
+  --btn-bd: rgba(255, 255, 255, 0.28);
 }
 .btn--outline-light:hover {
   --btn-bg: var(--white);
@@ -421,8 +458,8 @@ hr {
 }
 
 .btn--sm {
-  padding: 11px 20px;
-  min-height: 44px;
+  padding: 12px 22px;
+  min-height: 46px;
   font-size: 0.875rem;
 }
 .btn--block {
@@ -438,22 +475,20 @@ hr {
   justify-content: center;
 }
 
-/* Quiet text link with an animated gold underline */
+/* Quiet text link that leads with its arrow on hover */
 .link-arrow {
   display: inline-flex;
   align-items: center;
   gap: 9px;
   font-family: var(--font-display);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--navy-800);
   text-decoration: none;
-  padding-bottom: 3px;
-  border-bottom: 1px solid var(--gold-400);
-  transition: gap 0.22s var(--ease), color 0.22s var(--ease);
+  transition: gap 0.24s var(--ease), color 0.24s var(--ease);
 }
 .link-arrow:hover {
-  gap: 14px;
+  gap: 13px;
   color: var(--gold-600);
 }
 .on-dark .link-arrow {
@@ -465,19 +500,21 @@ hr {
 
 /* -------------------------------------------------------------- 6. CARDS */
 .card {
+  position: relative;
   background: var(--white);
   border: 1px solid var(--line-soft);
   border-radius: var(--r-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.28s var(--ease), box-shadow 0.28s var(--ease),
-    transform 0.28s var(--ease);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease),
+    transform 0.3s var(--ease-out);
 }
 .card:hover {
-  border-color: var(--line);
+  border-color: transparent;
   box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
+  transform: translateY(-6px);
 }
 
 .media {
@@ -490,24 +527,24 @@ hr {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s var(--ease);
+  transition: transform 0.8s var(--ease-out);
 }
 .card:hover .media img {
-  transform: scale(1.045);
+  transform: scale(1.06);
 }
 
 .tag {
   display: inline-block;
   font-family: var(--font-display);
   font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #8a5a18; /* 5.24:1 on the cream-100 chip background */
+  color: var(--navy-700);
   background: var(--cream-100);
   border: 1px solid var(--line);
-  border-radius: var(--r-sm);
-  padding: 4px 9px;
+  border-radius: var(--r-pill);
+  padding: 5px 11px;
   line-height: 1.4;
 }
 
@@ -519,10 +556,9 @@ hr {
 }
 .field label {
   font-family: var(--font-display);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.035em;
-  text-transform: uppercase;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   color: var(--navy-700);
 }
 .field .req {
@@ -540,31 +576,33 @@ hr {
   font-family: inherit;
   font-size: 1rem;
   color: var(--ink);
-  background: var(--white);
+  background: var(--cream);
   border: 1px solid var(--line);
   border-radius: var(--r-md);
-  padding: 13px 15px;
-  min-height: 50px;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  padding: 14px 16px;
+  min-height: 52px;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease),
+    background-color 0.2s var(--ease);
 }
 .field textarea {
-  min-height: 118px;
+  min-height: 124px;
   resize: vertical;
   line-height: 1.6;
 }
 .field select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2315233f' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2313203a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 15px center;
-  padding-right: 40px;
+  background-position: right 16px center;
+  padding-right: 42px;
 }
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
   outline: none;
+  background: var(--white);
   border-color: var(--gold-400);
-  box-shadow: 0 0 0 3px rgba(217, 163, 83, 0.18);
+  box-shadow: 0 0 0 4px rgba(224, 173, 85, 0.18);
 }
 .field input::placeholder,
 .field textarea::placeholder {
@@ -587,17 +625,18 @@ hr {
    hidden starting state, so a failed or slow script can never leave a section
    blank — and search engines always see the text. */
 .js .reveal {
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+/* Scoped to the hidden state only. Once revealed the element carries no
+   transform of its own, so component hover lifts are free to apply — a
+   `.is-visible { transform: none }` rule would out-specify them. */
+.js .reveal:not(.is-visible) {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(22px);
   will-change: opacity, transform;
 }
-.js .reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
 @media (prefers-reduced-motion: reduce) {
-  .js .reveal {
+  .js .reveal:not(.is-visible) {
     opacity: 1;
     transform: none;
   }

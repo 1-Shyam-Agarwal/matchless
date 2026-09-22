@@ -2,13 +2,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Icon from './Icon';
 
+/** Image-led tile — the copy sits over the photograph behind a gradient scrim. */
 export default function CategoryCard({ category, priority = false }) {
   const href = `/categories/${category.slug}/`;
 
   return (
     <article className="card category-card">
       <Link href={href} className="category-card__link">
-        <span className="media category-card__media">
+        <span className="category-card__media">
           <Image
             src={category.image}
             alt={`${category.name} — corporate gifting`}

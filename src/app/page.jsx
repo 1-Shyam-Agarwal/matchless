@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Hero from '@/components/Hero';
+import TrustStrip from '@/components/TrustStrip';
 import Icon from '@/components/Icon';
 import Reveal from '@/components/Reveal';
 import SectionHeading from '@/components/SectionHeading';
@@ -30,6 +31,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+
+      <TrustStrip />
 
       {/* ------------------------------------------- 2. TRUST / VALUE PROP */}
       <section className="section" aria-labelledby="value-title">

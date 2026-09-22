@@ -4,13 +4,13 @@ import Icon from './Icon';
 import { site } from '@/data/site';
 
 /**
- * Homepage hero. Split composition — copy on the left, a layered product
- * image pair on the right — so it reads as a B2B brand page rather than a
- * shopfront. The main image is priority-loaded as the LCP element.
+ * Homepage hero. A dark, image-led panel — copy on the left, a layered product
+ * image pair on the right, and a glass stat rail across the foot. The main
+ * image is priority-loaded as the LCP element.
  */
 export default function Hero() {
   return (
-    <section className="hero" aria-labelledby="hero-title">
+    <section className="hero on-dark" aria-labelledby="hero-title">
       <div className="container hero__inner">
         <div className="hero__copy">
           <p className="eyebrow hero__eyebrow">{site.tagline}</p>
@@ -24,7 +24,7 @@ export default function Hero() {
             <Link href="/quote/" className="btn btn--gold">
               Get a Quote <Icon name="arrowRight" size={18} />
             </Link>
-            <Link href="/products/" className="btn btn--outline">
+            <Link href="/products/" className="btn btn--outline-light">
               Explore Our Gifts
             </Link>
           </div>
@@ -73,6 +73,27 @@ export default function Hero() {
             </span>
           </div>
         </div>
+      </div>
+
+      <div className="container">
+        <dl className="hero__stats">
+          <div className="hero__stat">
+            <dt>Categories</dt>
+            <dd>10 gifting ranges</dd>
+          </div>
+          <div className="hero__stat">
+            <dt>Branding</dt>
+            <dd>Deboss, foil &amp; laser</dd>
+          </div>
+          <div className="hero__stat">
+            <dt>Order type</dt>
+            <dd>Bulk &amp; volume</dd>
+          </div>
+          <div className="hero__stat">
+            <dt>Approval</dt>
+            <dd>Proof before production</dd>
+          </div>
+        </dl>
       </div>
     </section>
   );
