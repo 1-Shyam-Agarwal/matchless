@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import Icon from './Icon';
 import { categories } from '@/data/categories';
+import { shopCategories } from '@/data/shopCategories';
 import {
   site,
   contact,
@@ -19,6 +20,12 @@ const BUDGETS = [
   '₹2,500 – ₹5,000 per gift',
   'Above ₹5,000 per gift',
   'Not decided yet',
+];
+
+/* Homepage tiles first, then the catalogue categories, without duplicates. */
+const CATEGORY_OPTIONS = [
+  ...new Set([...shopCategories.map((c) => c.name), ...categories.map((c) => c.name)]),
+  'Not sure yet',
 ];
 
 const EMPTY = {
@@ -57,6 +64,7 @@ export default function EnquiryForm({
       : '',
   });
   const [errors, setErrors] = useState({});
+
   const [status, setStatus] = useState('idle'); // idle | sending | done | error
   const formRef = useRef(null);
 
@@ -266,7 +274,7 @@ export default function EnquiryForm({
     <div className={`enquiry${compact ? ' enquiry--compact' : ''}`}>
       {title && (
         <div className="enquiry__head">
-          <p className="eyebrow">Get a quote</p>
+          <p className="eyebrow">Enquire</p>
           <h2>{title}</h2>
           <p className="lead">{lead}</p>
         </div>
@@ -302,7 +310,7 @@ export default function EnquiryForm({
           })}
           {field('category', 'Gift Category', {
             as: 'select',
-            options: [...categories.map((c) => c.name), 'Not sure yet'],
+            options: CATEGORY_OPTIONS,
           })}
           {field('budget', 'Budget Range', { as: 'select', options: BUDGETS })}
           {field('location', 'Delivery Location', {
@@ -353,7 +361,7 @@ export default function EnquiryForm({
             className="btn btn--gold"
             disabled={status === 'sending'}
           >
-            {status === 'sending' ? 'Sending…' : 'Request a Quote'}
+            {status === 'sending' ? 'Sending…' : 'Send Enquiry'}
             {status !== 'sending' && <Icon name="arrowRight" size={18} />}
           </button>
           <p className="enquiry__assure">

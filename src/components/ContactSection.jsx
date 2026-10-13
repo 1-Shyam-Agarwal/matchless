@@ -104,9 +104,6 @@ export default function ContactSection({ heading = 'Contact Matchless' }) {
       </ul>
 
       <div className="btn-row contact-actions">
-        <Link href="/quote/" className="btn btn--navy">
-          Request a Quote <Icon name="arrowRight" size={18} />
-        </Link>
         {wa && (
           <a
             href={wa}

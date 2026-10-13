@@ -1,47 +1,95 @@
-import PageHeader from '@/components/PageHeader';
+import Link from 'next/link';
+import Image from 'next/image';
+import Icon from '@/components/Icon';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import CategoryCard from '@/components/CategoryCard';
-import Reveal from '@/components/Reveal';
-import CTASection from '@/components/CTASection';
+import ShopCategoryGrid from '@/components/home/ShopCategoryGrid';
+import { shopCategories } from '@/data/shopCategories';
 import { categories } from '@/data/categories';
+import { productsInCategory } from '@/data/products';
 import { pageMeta } from '@/lib/seo';
+import '../home.css';
 
 export const metadata = pageMeta({
   title: 'Corporate Gift Categories',
   description:
-    'Browse corporate gifting categories: gift hampers, employee gifts, client and executive gifts, branded merchandise, promotional products, festival gifts, onboarding kits and customized gifts.',
+    'Browse corporate gifting by category: tech & gadgets, electronic appliances, lunch & kitchen essentials, bags & travel, onboarding kits, customisable items, trophies & awards, plus hampers, festival gifts and executive sets.',
   path: '/categories/',
   image: '/images/categories/corporate-gift-hampers.jpg',
 });
 
 export default function CategoriesPage() {
+  /* Catalogue collections only show once they have products in them. */
+  const collections = categories
+    .map((c) => ({ ...c, count: productsInCategory(c.slug).length }))
+    .filter((c) => c.count > 0);
+
   return (
-    <>
-      <PageHeader
-        eyebrow="Categories"
-        title="Corporate Gift Categories"
-        lead="Ten ways into the catalogue — by recipient, by occasion or by budget. Everything here can be branded and produced in bulk."
-      />
+    <div className="ed">
       <Breadcrumbs items={[{ label: 'Categories' }]} />
 
-      <section className="section">
+      {/* ----------------------------------------------------- INTRO */}
+      <section className="hs hs--flush">
         <div className="container">
-          <div className="grid grid--3">
-            {categories.map((c, i) => (
-              <Reveal key={c.slug} delay={(i % 3) * 60}>
-                <CategoryCard category={c} priority={i < 3} />
-              </Reveal>
-            ))}
+          <div className="pg-head">
+            <div>
+              <p className="hs__kicker">{shopCategories.length + collections.length} ways to start</p>
+              <h1 className="pg-head__title">
+                Shop by <em>Category</em>
+              </h1>
+            </div>
+            <p className="pg-head__lead">
+              Pick a category to see what&rsquo;s in the range and how we brand
+              it. Everything is available in bulk with your logo.
+            </p>
           </div>
+
+          <ShopCategoryGrid categories={shopCategories} showShort />
         </div>
       </section>
 
-      <CTASection
-        eyebrow="Not sure where to start?"
-        title="Tell us the occasion and the headcount"
-        lead="We will shortlist options across categories that fit your budget, and share bulk pricing against each."
-        primaryLabel="Get a Quote"
-      />
-    </>
+      {/* ------------------------------------------- CATALOGUE COLLECTIONS */}
+      {collections.length > 0 && (
+      <section className="hs hs--last" aria-labelledby="col-title">
+        <div className="container">
+          <div className="hs__head">
+            <div>
+              <p className="hs__kicker">By recipient &amp; occasion</p>
+              <h2 id="col-title" className="hs__title">
+                Catalogue <em>collections</em>
+              </h2>
+            </div>
+            <Link href="/products/" className="hs__more">
+              All products <Icon name="arrowRight" size={16} />
+            </Link>
+          </div>
+
+          <ul className="cc">
+            {collections.map((c) => {
+              const { count } = c;
+              return (
+                <li key={c.slug}>
+                  <Link href={`/categories/${c.slug}/`} className="cc__card">
+                    <span className="cc__media">
+                      <Image
+                        src={c.image}
+                        alt=""
+                        width={900}
+                        height={675}
+                        sizes="(max-width: 640px) 45vw, (max-width: 1000px) 30vw, 220px"
+                      />
+                    </span>
+                    <span className="cc__name">{c.name}</span>
+                    <span className="cc__count">
+                      {count} {count === 1 ? 'product' : 'products'}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+      )}
+    </div>
   );
 }

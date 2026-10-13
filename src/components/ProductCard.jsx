@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Icon from './Icon';
-import { categoryName } from '@/data/categories';
+import { productLabel } from '@/data/products';
 
 /** Catalogue card. Enquiry-led: no price, no cart — a quote request only. */
 export default function ProductCard({ product, priority = false }) {
@@ -25,7 +25,7 @@ export default function ProductCard({ product, priority = false }) {
       </Link>
 
       <div className="product-card__body">
-        <p className="product-card__cat">{categoryName(product.categories[0])}</p>
+        <p className="product-card__cat">{productLabel(product)}</p>
         <h3 className="product-card__title">
           <Link href={href}>{product.name}</Link>
         </h3>

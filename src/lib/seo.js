@@ -9,7 +9,7 @@ export function pageMeta({
   title,
   description,
   path = '/',
-  image = '/images/hero/hero-prestige-gift-set.jpg',
+  image = '/images/hero/home-hero-gifting.jpg',
   keywords,
 }) {
   const url = `${site.url}${path}`;
@@ -80,19 +80,31 @@ export function productSchema(product) {
     name: product.name,
     description: product.short,
     image: `${site.url}${product.image}`,
-    category: product.categories[0],
-    brand: { '@type': 'Brand', name: site.name },
+    category: product.type ?? product.categories[0],
+    brand: { '@type': 'Brand', name: product.brand ?? site.name },
+    ...(product.model ? { model: product.model, sku: product.model } : {}),
     offers: {
       '@type': 'Offer',
       availability: 'https://schema.org/InStock',
       priceCurrency: 'INR',
-      // Price is quoted per enquiry; the enquiry page is the "offer" URL.
-      url: `${site.url}/quote/`,
-      priceSpecification: {
-        '@type': 'PriceSpecification',
-        valueAddedTaxIncluded: false,
-        description: 'Price on request — bulk pricing quoted per enquiry.',
-      },
+      url: `${site.url}/products/${product.slug}/`,
+      ...(product.price
+        ? {
+            price: product.price,
+            priceSpecification: {
+              '@type': 'UnitPriceSpecification',
+              price: product.price,
+              priceCurrency: 'INR',
+              valueAddedTaxIncluded: true,
+            },
+          }
+        : {
+            priceSpecification: {
+              '@type': 'PriceSpecification',
+              valueAddedTaxIncluded: false,
+              description: 'Price on request — bulk pricing quoted per enquiry.',
+            },
+          }),
     },
   };
 }

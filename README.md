@@ -3,9 +3,9 @@
 A premium corporate gifting **catalogue and enquiry** website.
 
 > **This is not an e-commerce site.** There is no cart, no checkout, no payment
-> gateway and no "Buy Now" anywhere. Every product leads to *Enquire Now*,
-> *Request Pricing* or *Get a Quote*. Customers contact you; you quote and
-> close the order offline.
+> gateway and no "Buy Now" anywhere. Every product leads to a WhatsApp
+> enquiry or the contact page. Customers contact you; you quote and close the
+> order offline.
 
 Built with Next.js (React) and exported as plain static HTML, so it can be
 hosted anywhere — Vercel, Netlify, Hostinger, GoDaddy, cPanel, S3 — with no
@@ -167,7 +167,6 @@ src/
     products/             /products/    and  /products/[slug]/
     custom-gifting/       /custom-gifting/
     contact/              /contact/
-    quote/                /quote/
     globals.css           design tokens, base styles, buttons, forms
     components.css        component styles
     sitemap.js            generates sitemap.xml
@@ -214,7 +213,7 @@ Plus Jakarta Sans (headings) and Inter (body), self-hosted at build time.
 - **SEO**: unique titles and meta descriptions per page, canonical URLs, Open
   Graph and Twitter cards, `sitemap.xml`, `robots.txt`, and Organization,
   Product and BreadcrumbList structured data. Product schema deliberately
-  carries **no invented price** — it points to the quote page instead.
+  carries **no invented price** — it points to the contact page instead.
 - **Enquiry-only verified**: an automated check across every page confirms the
   words *add to cart, buy now, checkout, shopping cart, pay now* appear
   nowhere, and there are no payment inputs.

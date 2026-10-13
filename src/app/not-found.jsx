@@ -16,8 +16,8 @@ export default function NotFound() {
         <Link href="/products/" className="btn btn--navy">
           Browse Products <Icon name="arrowRight" size={18} />
         </Link>
-        <Link href="/quote/" className="btn btn--outline">
-          Get a Quote
+        <Link href="/contact/" className="btn btn--outline">
+          Contact Us
         </Link>
       </div>
     </section>

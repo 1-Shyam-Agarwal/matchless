@@ -1,25 +1,22 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Icon from '@/components/Icon';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import ProductGrid from '@/components/ProductGrid';
-import SectionHeading from '@/components/SectionHeading';
-import EnquiryForm from '@/components/EnquiryForm';
+import ProductGallery from '@/components/ProductGallery';
+import BestsellerCarousel from '@/components/home/BestsellerCarousel';
 import {
   products,
   productBySlug,
+  productLabel,
   relatedProducts,
+  toTile,
 } from '@/data/products';
 import { categoryName } from '@/data/categories';
-import { occasionName } from '@/data/occasions';
-import {
-  contact,
-  telHref,
-  whatsappHref,
-  whatsappMessages,
-} from '@/data/site';
+import { shopCategoryBySlug } from '@/data/shopCategories';
+import { pricingTerms, whatsappHref, whatsappMessages } from '@/data/site';
+import { discountPct, inr } from '@/lib/price';
 import { pageMeta, productSchema } from '@/lib/seo';
+import '../../home.css';
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -29,9 +26,10 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const product = productBySlug(slug);
   if (!product) return {};
+  const title = product.model ? `${product.brand} ${product.name} (${product.model})` : product.name;
   return pageMeta({
-    title: product.name,
-    description: `${product.short} Customizable with your branding and available for bulk corporate orders. Price on request from Matchless Corporate Gifting.`,
+    title,
+    description: `${product.short} Available for bulk corporate gifting with your branding. Price on request from Matchless Corporate Gifting.`,
     path: `/products/${product.slug}/`,
     image: product.image,
   });
@@ -42,176 +40,205 @@ export default async function ProductPage({ params }) {
   const product = productBySlug(slug);
   if (!product) notFound();
 
-  const related = relatedProducts(product, 3);
-  const tel = telHref();
-  const wa = whatsappHref(whatsappMessages.product(product.name));
+  const p = product;
+  const shop = p.shop ? shopCategoryBySlug(p.shop) : null;
+  const fullName = p.model ? `${p.name} (${p.model})` : p.name;
+  const wa = whatsappHref(whatsappMessages.product(fullName));
+  const related = relatedProducts(p, 10).map(toTile);
+
+  const crumbs = shop
+    ? [
+        { label: 'Categories', href: '/categories/' },
+        { label: shop.name, href: `/categories/${shop.slug}/` },
+        { label: p.name },
+      ]
+    : [
+        { label: 'Products', href: '/products/' },
+        ...(p.categories[0]
+          ? [{ label: categoryName(p.categories[0]), href: `/categories/${p.categories[0]}/` }]
+          : []),
+        { label: p.name },
+      ];
+
+  /* Specification rows — only the ones we actually have */
+  const specs = [
+    ['Brand', p.brand ?? 'Matchless'],
+    ['Model', p.model],
+    ['Type', p.type ?? p.giftType],
+    ['Category', shop ? shop.name : p.categories.map(categoryName).join(', ')],
+    ['Carton quantity', p.casePack ? `${p.casePack} units per carton` : null],
+    ['Minimum order', p.moq],
+  ].filter(([, v]) => v);
+
+  const branding = p.customization ?? [
+    'Branded packaging or gift sleeve',
+    'Logo sticker or engraved plate (where the finish allows)',
+    'Personalised greeting card in every box',
+  ];
 
   return (
-    <>
-      <Breadcrumbs
-        items={[
-          { label: 'Products', href: '/products/' },
-          { label: product.name },
-        ]}
-      />
+    <div className="ed">
+      <Breadcrumbs items={crumbs} />
 
-      <section className="section section--tight">
-        <div className="container pdp">
-          <div className="pdp__media">
-            <Image
-              src={product.image}
-              alt={`${product.name} — premium corporate gift set`}
-              width={1100}
-              height={825}
-              priority
-              sizes="(max-width: 900px) 94vw, 52vw"
-            />
-          </div>
+      {/* ------------------------------------------------------- MAIN */}
+      <section className="hs hs--flush">
+        <div className="container pdx">
+          <ProductGallery
+            images={[...(p.images ?? [p.image]), ...(p.lifestyle ?? [])]}
+            sizes={[...(p.imageSizes ?? [[1100, 825]]), ...(p.lifestyleSizes ?? [])]}
+            name={fullName}
+            cutoutCount={p.cutout ? (p.images ?? [p.image]).length : 0}
+          />
 
-          <div className="pdp__info">
-            <p className="pdp__cat">{categoryName(product.categories[0])}</p>
-            <h1>{product.name}</h1>
-            <p className="pdp__short">{product.description}</p>
-
-            {product.tags?.length > 0 && (
-              <ul className="pdp__tags">
-                {product.tags.map((t) => (
-                  <li key={t}>
-                    <span className="tag">{t}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className="pdx__info">
+            <p className="pdx__label">
+              {p.brand && <span className="pdx__brand">{p.brand}</span>}
+              {productLabel(p)}
+            </p>
+            <h1 className="pdx__title">{p.name}</h1>
+            <p className="pdx__short">{p.description ?? p.short}</p>
+            {p.model && (
+              <p className="pdx__model">
+                Model <strong>{p.model}</strong>
+              </p>
             )}
 
-            <div className="pdp__price">
-              <div>
-                <p className="pdp__price-label">Price on Request</p>
-                <p className="pdp__price-note">
-                  {product.moq
-                    ? `Minimum order: ${product.moq}.`
-                    : 'Bulk pricing depends on quantity, branding and packaging.'}
+            {p.price ? (
+              <div className="pdx__price">
+                <p className="pdx__price-row">
+                  {p.mrp > p.price && (
+                    <s className="pdx__price-mrp">MRP {inr(p.mrp)}</s>
+                  )}
+                  <span className="pdx__price-now">
+                    <span className="visually-hidden">Offer price </span>
+                    {inr(p.price)}
+                  </span>
+                  {discountPct(p.mrp, p.price) && (
+                    <span className="pdx__price-off">{discountPct(p.mrp, p.price)}% off</span>
+                  )}
+                </p>
+                <p className="pdx__price-note">{pricingTerms.gst}</p>
+                <p className="pdx__deal">
+                  <strong>Minimum order: {p.moq ?? '100 units'}</strong>
+                  <span>{pricingTerms.negotiable}</span>
                 </p>
               </div>
-              <Link href="/quote/" className="btn btn--gold btn--sm">
-                Get Bulk Pricing
+            ) : (
+              <div className="pdx__price">
+                <p className="pdx__price-main">Price on request</p>
+                <p className="pdx__price-note">
+                  Bulk pricing depends on quantity, branding and packaging — we
+                  quote per enquiry.
+                </p>
+              </div>
+            )}
+
+            <div className="pdx__actions">
+              {wa && (
+                <a href={wa} className="pdx__btn pdx__btn--primary" target="_blank" rel="noopener noreferrer">
+                  <Icon name="whatsapp" size={19} /> Enquire on WhatsApp
+                </a>
+              )}
+              <Link href="/contact/" className="pdx__btn pdx__btn--wa">
+                Contact us
               </Link>
             </div>
 
-            <div className="btn-row pdp__actions">
-              <a href="#enquire" className="btn btn--navy">
-                Enquire Now <Icon name="arrowRight" size={18} />
-              </a>
-              {wa ? (
-                <a
-                  href={wa}
-                  className="btn btn--outline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Icon name="whatsapp" size={18} /> WhatsApp
-                </a>
-              ) : tel ? (
-                <a href={tel} className="btn btn--outline">
-                  <Icon name="phone" size={18} /> {contact.phone}
-                </a>
+            <ul className="pdx__perks">
+              {p.price ? (
+                <>
+                  <li>
+                    <Icon name="truck" size={20} />
+                    <div>
+                      <strong>Transportation</strong>
+                      <span>{pricingTerms.transport}</span>
+                    </div>
+                  </li>
+                </>
               ) : (
-                <Link href="/contact/" className="btn btn--outline">
-                  Talk to Us
-                </Link>
+                <li>
+                  <Icon name="box" size={20} />
+                  <div>
+                    <strong>Bulk &amp; corporate orders</strong>
+                    <span>
+                      {p.casePack
+                        ? `Supplied in cartons of ${p.casePack} — volume pricing on request.`
+                        : 'Volume pricing for any headcount, quoted on request.'}
+                    </span>
+                  </div>
+                </li>
               )}
-            </div>
-
-            <div className="pdp__block">
-              <h2>Key Features</h2>
-              <ul className="pdp__list">
-                {product.features.map((f) => (
-                  <li key={f}>
-                    <Icon name="check" size={17} />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pdp__block">
-              <h2>Customization &amp; Branding</h2>
-              <ul className="pdp__list">
-                {product.customization.map((c) => (
-                  <li key={c}>
-                    <Icon name="palette" size={17} />
-                    <span>{c}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pdp__block">
-              <h2>Suitable Occasions</h2>
-              <ul className="pdp__chips">
-                {product.occasions.map((o) => (
-                  <li key={o}>
-                    <Link href={`/products/?occasion=${o}`}>
-                      {occasionName(o)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pdp__block">
-              <h2>Also Listed Under</h2>
-              <ul className="pdp__chips">
-                {product.categories.map((c) => (
-                  <li key={c}>
-                    <Link href={`/categories/${c}/`}>{categoryName(c)}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <p className="pdp__assure">
-              <Icon name="check" size={16} />
-              <span>
-                This is a catalogue listing, not an online store. We share pricing
-                against your quantity and branding, then confirm the order
-                directly with you — no payment is taken on this website.
-              </span>
-            </p>
+              <li>
+                <Icon name="palette" size={20} />
+                <div>
+                  <strong>Branding &amp; gifting</strong>
+                  <span>{branding[0]}.</span>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* ------------------------------------------------------- ENQUIRY */}
-      <section className="section section--alt" id="enquire">
-        <div className="container container--narrow">
-          <EnquiryForm
-            title={`Enquire about ${product.name}`}
-            lead="Send us your quantity, branding requirement and delivery date. We will respond with bulk pricing and customization options."
-            presetProduct={product.name}
-          />
+      {/* ---------------------------------------------- FEATURES + SPECS */}
+      <section className="hs" aria-label="Product details">
+        <div className="container cd-info">
+          <div className="cd-card">
+            <h2 className="cd-card__title">
+              Key <em>features</em>
+            </h2>
+            <ul className="cd-list">
+              {p.features.map((f) => (
+                <li key={f}>
+                  <Icon name="check" size={17} /> {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="cd-card">
+            <h2 className="cd-card__title">
+              <em>Specifications</em>
+            </h2>
+            <dl className="pdx__specs">
+              {specs.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+            <h3 className="pdx__sub">Branding options</h3>
+            <ul className="hb__chips">
+              {branding.map((b) => (
+                <li key={b}>{b}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------- RELATED */}
       {related.length > 0 && (
-        <section className="section">
+        <section className="hs hs--last" aria-labelledby="rel-title">
           <div className="container">
-            <SectionHeading
-              eyebrow="You might also consider"
-              title="Related corporate gifts"
-              lead="Similar specification, different colourway or format."
-            />
-            <ProductGrid products={related} />
+            <div className="hs__head">
+              <h2 id="rel-title" className="hs__title">
+                You may also <em>like</em>
+              </h2>
+              <Link href={shop ? `/categories/${shop.slug}/` : '/products/'} className="hs__more">
+                {shop ? `All ${shop.name.toLowerCase()}` : 'All products'}{' '}
+                <Icon name="arrowRight" size={16} />
+              </Link>
+            </div>
+            <BestsellerCarousel products={related} label="Related products" />
           </div>
         </section>
       )}
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(productSchema(product)),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema(p)) }}
       />
-    </>
+    </div>
   );
 }

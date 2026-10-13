@@ -1,4 +1,4 @@
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans, Instrument_Serif } from 'next/font/google';
 import './globals.css';
 import './components.css';
 import Navbar from '@/components/Navbar';
@@ -20,6 +20,15 @@ const jakarta = Plus_Jakarta_Sans({
   weight: ['500', '600', '700', '800'],
   display: 'swap',
   variable: '--font-jakarta',
+});
+
+/* Editorial serif — used in italics for the accent words in headlines. */
+const serif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-serif',
 });
 
 export const metadata = {
@@ -80,7 +89,7 @@ export default function RootLayout({ children }) {
        from what the server sent. Scoped to this element only. */
     <html
       lang="en"
-      className={`${inter.variable} ${jakarta.variable}`}
+      className={`${inter.variable} ${jakarta.variable} ${serif.variable}`}
       suppressHydrationWarning
     >
       <body>

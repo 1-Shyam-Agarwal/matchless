@@ -19,14 +19,16 @@ export default function ProductBrowser() {
   const [giftType, setGiftType] = useState(ALL);
   const [customOnly, setCustomOnly] = useState(false);
 
-  /* Deep links like /products/?category=employee-gifts or ?occasion=conferences */
+  /* Deep links like /products/?category=employee-gifts, ?occasion=conferences or ?q=diary */
   useEffect(() => {
     const c = params.get('category');
     const o = params.get('occasion');
     const t = params.get('type');
+    const q = params.get('q');
     if (c && categories.some((x) => x.slug === c)) setCategory(c);
     if (o && occasions.some((x) => x.slug === o)) setOccasion(o);
     if (t && giftTypes.includes(t)) setGiftType(t);
+    if (q) setQuery(q.slice(0, 80));
   }, [params]);
 
   const results = useMemo(() => {

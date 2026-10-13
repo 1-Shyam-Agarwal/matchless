@@ -34,7 +34,7 @@ export const contact = {
 
   /* --- WhatsApp ----------------------------------------------------------
      Digits only, country code first, NO plus sign. e.g. '919876543210'      */
-  whatsappE164: '919311161298',
+  whatsappE164: '918796881730',
 
   /* --- Email ------------------------------------------------------------ */
   email: 'agarwalshyam.official@gmail.com',
@@ -61,12 +61,17 @@ export const contact = {
    'https://formspree.io/f/xxxxxxxx'                                          */
 export const formEndpoint = '[ADD FORM ENDPOINT URL]';
 
+/** Wording shown with listed prices (product pages and cards). */
+export const pricingTerms = {
+  gst: 'Inclusive of 18% GST',
+  negotiable: 'Price is highly negotiable according to quantity.',
+  transport: 'Depends on your delivery location — it may be free.',
+};
+
 /** Pre-filled WhatsApp messages, so an enquiry arrives with context. */
 export const whatsappMessages = {
   default:
     'Hello Matchless Corporate Gifting, I am interested in your corporate gifting products and would like to discuss my requirements.',
-  quote:
-    'Hello Matchless Corporate Gifting, I would like to request a quote for corporate gifting.',
   product: (name) =>
     `Hello Matchless Corporate Gifting, I would like to enquire about "${name}". Could you share pricing and customization options?`,
 };

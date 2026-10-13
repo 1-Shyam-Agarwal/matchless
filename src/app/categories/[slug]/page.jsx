@@ -4,6 +4,7 @@ import Icon from '@/components/Icon';
 import PageHeader from '@/components/PageHeader';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductGrid from '@/components/ProductGrid';
+import ComingSoon from '@/components/ComingSoon';
 import CategoryCard from '@/components/CategoryCard';
 import SectionHeading from '@/components/SectionHeading';
 import CTASection from '@/components/CTASection';
@@ -11,13 +12,25 @@ import Reveal from '@/components/Reveal';
 import { categories, categoryBySlug } from '@/data/categories';
 import { productsInCategory } from '@/data/products';
 import { pageMeta } from '@/lib/seo';
+import { shopCategories, shopCategoryBySlug } from '@/data/shopCategories';
+import ShopCategoryView from './ShopCategoryView';
 
+/* Serves both the shop categories (tech, bags, trophies… — new design) and the
+   catalogue collections (hampers, employee gifts… — product list). */
 export function generateStaticParams() {
-  return categories.map((c) => ({ slug: c.slug }));
+  return [...shopCategories, ...categories].map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
+  const shop = shopCategoryBySlug(slug);
+  if (shop) {
+    return pageMeta({
+      title: `${shop.name} — Corporate Gifts in Bulk`,
+      description: `${shop.description} ${shop.short} Request bulk pricing from Matchless Corporate Gifting.`.slice(0, 300),
+      path: `/categories/${shop.slug}/`,
+    });
+  }
   const category = categoryBySlug(slug);
   if (!category) return {};
   return pageMeta({
@@ -33,6 +46,9 @@ export async function generateMetadata({ params }) {
 
 export default async function CategoryPage({ params }) {
   const { slug } = await params;
+  const shop = shopCategoryBySlug(slug);
+  if (shop) return <ShopCategoryView category={shop} />;
+
   const category = categoryBySlug(slug);
   if (!category) notFound();
 
@@ -47,9 +63,6 @@ export default async function CategoryPage({ params }) {
         lead={category.description}
       >
         <div className="btn-row" style={{ marginTop: '28px' }}>
-          <Link href="/quote/" className="btn btn--gold">
-            Get Bulk Pricing <Icon name="arrowRight" size={18} />
-          </Link>
           <Link href="/products/" className="btn btn--outline-light">
             Browse Everything
           </Link>
@@ -65,23 +78,29 @@ export default async function CategoryPage({ params }) {
 
       <section className="section">
         <div className="container">
-          <div className="browser__meta">
-            <p>
-              <strong>{items.length}</strong>{' '}
-              {items.length === 1 ? 'product' : 'products'} in {category.name}
-            </p>
-            <Link
-              href={`/products/?category=${category.slug}`}
-              className="browser__reset"
-            >
-              <Icon name="search" size={14} /> Filter all products
-            </Link>
-          </div>
-          <ProductGrid
-            products={items}
-            priorityCount={3}
-            label={`Products in ${category.name}`}
-          />
+          {items.length === 0 ? (
+            <ComingSoon name={category.name} />
+          ) : (
+            <>
+              <div className="browser__meta">
+                <p>
+                  <strong>{items.length}</strong>{' '}
+                  {items.length === 1 ? 'product' : 'products'} in {category.name}
+                </p>
+                <Link
+                  href={`/products/?category=${category.slug}`}
+                  className="browser__reset"
+                >
+                  <Icon name="search" size={14} /> Filter all products
+                </Link>
+              </div>
+              <ProductGrid
+                products={items}
+                priorityCount={3}
+                label={`Products in ${category.name}`}
+              />
+            </>
+          )}
         </div>
       </section>
 
@@ -106,7 +125,6 @@ export default async function CategoryPage({ params }) {
         eyebrow="Request pricing"
         title={`Need ${category.name.toLowerCase()} in bulk?`}
         lead="Tell us the quantity, the branding you need and your delivery date. We will come back with options and pricing."
-        primaryLabel="Request a Quote"
       />
     </>
   );

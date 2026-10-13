@@ -4,14 +4,14 @@ import { whatsappHref, telHref, contact, whatsappMessages } from '@/data/site';
 
 /** Enquiry-focused call to action. Never a purchase path. */
 export default function CTASection({
-  eyebrow = 'Request pricing',
+  eyebrow = 'Talk to us',
   title = 'Thoughtful Gifts. Stronger Connections.',
   lead = 'Premium corporate gifting solutions designed to make every business relationship memorable.',
-  primaryLabel = 'Start Your Enquiry',
-  primaryHref = '/quote/',
+  primaryLabel = 'Contact Us',
+  primaryHref = '/contact/',
   variant = 'navy',
 }) {
-  const wa = whatsappHref(whatsappMessages.quote);
+  const wa = whatsappHref(whatsappMessages.default);
   const tel = telHref();
 
   return (
@@ -39,16 +39,7 @@ export default function CTASection({
             <a href={tel} className="btn btn--outline-light">
               <Icon name="phone" size={18} /> {contact.phone}
             </a>
-          ) : (
-            /* No phone or WhatsApp configured yet — send people somewhere
-               other than wherever the primary button already goes. */
-            <Link
-              href={primaryHref === '/contact/' ? '/quote/' : '/contact/'}
-              className="btn btn--outline-light"
-            >
-              {primaryHref === '/contact/' ? 'Request a Quote' : 'Talk to Us'}
-            </Link>
-          )}
+          ) : null}
         </div>
         <p className="cta__note">
           No online payment. We share pricing and confirm your order directly.

@@ -12,7 +12,7 @@ export default function ProductGrid({
     return (
       <p className="empty-state">
         No products match this selection yet. Try a different filter, or{' '}
-        <a href="/quote/">tell us what you are looking for</a> — we source beyond
+        <a href="/contact/">tell us what you are looking for</a> — we source beyond
         this catalogue.
       </p>
     );

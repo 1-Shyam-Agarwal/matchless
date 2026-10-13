@@ -12,7 +12,7 @@ export const metadata = pageMeta({
   description:
     'Browse the Matchless corporate gifts catalogue — premium diary and pen gift sets, gift hampers, onboarding kits, branded notebooks and customized corporate gifting. Filter by category and occasion, then request bulk pricing.',
   path: '/products/',
-  image: '/images/products/prestige-monochrome-diary-pen-set.jpg',
+  image: '/images/hero/home-hero-gifting.jpg',
 });
 
 export default function ProductsPage() {
@@ -46,7 +46,6 @@ export default function ProductsPage() {
         eyebrow="Request pricing"
         title="Found something close? We will tailor it."
         lead="Quantities, colourways, packaging and branding are all adjustable. Send us the brief and we will quote against it."
-        primaryLabel="Request a Quote"
       />
     </>
   );

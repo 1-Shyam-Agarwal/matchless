@@ -44,6 +44,12 @@ export default function Navbar() {
     };
   }, [open]);
 
+  /* Pages already moved to the new design use the centred-logo header. */
+  const isNewDesign =
+    pathname === '/' ||
+    pathname.startsWith('/categories') ||
+    pathname.startsWith('/products/');
+
   const isActive = (href) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
@@ -53,89 +59,130 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Slim utility bar — only shows details that have actually been filled in */}
-      <div className="topbar">
-        <div className="container topbar__inner">
-          <span className="topbar__tagline">{site.tagline}</span>
-          <div className="topbar__links">
-            {tel && (
-              <a href={tel}>
-                <Icon name="phone" size={15} />
-                <span>{contact.phone}</span>
-              </a>
-            )}
-            {mail && (
-              <a href={mail}>
-                <Icon name="mail" size={15} />
-                <span>{contact.email}</span>
-              </a>
-            )}
-            {!tel && !mail && (
-              <span className="topbar__muted">
-                Corporate gifting enquiries welcome
-              </span>
-            )}
+      {/* Slim utility bar — only shows details that have actually been filled in.
+          Hidden on new-design pages, which use the centred-logo header. */}
+      {!isNewDesign && (
+        <div className="topbar">
+          <div className="container topbar__inner">
+            <span className="topbar__tagline">{site.tagline}</span>
+            <div className="topbar__links">
+              {tel && (
+                <a href={tel}>
+                  <Icon name="phone" size={15} />
+                  <span>{contact.phone}</span>
+                </a>
+              )}
+              {mail && (
+                <a href={mail}>
+                  <Icon name="mail" size={15} />
+                  <span>{contact.email}</span>
+                </a>
+              )}
+              {!tel && !mail && (
+                <span className="topbar__muted">
+                  Corporate gifting enquiries welcome
+                </span>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
-        <div className="container header__inner">
-          <Link href="/" className="brand" aria-label={`${site.name} — home`}>
-            <Image
-              src="/images/brand/matchless-logo.png"
-              alt={`${site.name} logo`}
-              width={631}
-              height={382}
-              priority
-              className="brand__logo"
-            />
-          </Link>
+      {isNewDesign ? (
+        /* New design: logo left, links and actions right, in a light sticky
+           bar. */
+        <header className={`ohdr${scrolled ? ' ohdr--scrolled' : ''}`}>
+          <div className="container">
+            <div className="ohdr__inner">
+              <Link href="/" className="ohdr__brand" aria-label={`${site.name} — home`}>
+                <Image
+                  src="/images/brand/matchless-logo.png"
+                  alt={`${site.name} logo`}
+                  width={631}
+                  height={382}
+                  priority
+                  className="ohdr__logo"
+                />
+              </Link>
 
-          <nav className="nav" aria-label="Primary">
-            <ul className="nav__list">
-              {navLinks.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className={`nav__link${isActive(l.href) ? ' is-active' : ''}`}
-                    aria-current={isActive(l.href) ? 'page' : undefined}
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+              <nav className="ohdr__nav" aria-label="Primary">
+                <ul>
+                  {navLinks
+                    .filter((l) => l.href !== '/')
+                    .map((l) => (
+                      <li key={l.href}>
+                        <Link
+                          href={l.href}
+                          className={isActive(l.href) ? 'is-active' : undefined}
+                          aria-current={isActive(l.href) ? 'page' : undefined}
+                        >
+                          {l.label}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </nav>
 
-          <div className="header__actions">
-            {wa && (
-              <a
-                href={wa}
-                className="header__icon-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Message us on WhatsApp"
-              >
-                <Icon name="whatsapp" size={20} />
-              </a>
-            )}
-            <Link href="/quote/" className="btn btn--gold btn--sm header__cta">
-              Get a Quote
+              <div className="ohdr__actions">
+                <button
+                  type="button"
+                  className="ohdr__icon ohdr__burger"
+                  onClick={() => setOpen((v) => !v)}
+                  aria-expanded={open}
+                  aria-controls="mobile-menu"
+                  aria-label={open ? 'Close menu' : 'Open menu'}
+                >
+                  <Icon name={open ? 'close' : 'menu'} size={21} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+      ) : (
+        <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
+          <div className="container header__inner">
+            <Link href="/" className="brand" aria-label={`${site.name} — home`}>
+              <Image
+                src="/images/brand/matchless-logo.png"
+                alt={`${site.name} logo`}
+                width={631}
+                height={382}
+                priority
+                className="brand__logo"
+              />
             </Link>
-            <button
-              type="button"
-              className="header__burger"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-controls="mobile-menu"
-              aria-label={open ? 'Close menu' : 'Open menu'}
-            >
-              <Icon name={open ? 'close' : 'menu'} size={24} />
-            </button>
+
+            <nav className="nav" aria-label="Primary">
+              <ul className="nav__list">
+                {navLinks.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className={`nav__link${isActive(l.href) ? ' is-active' : ''}`}
+                      aria-current={isActive(l.href) ? 'page' : undefined}
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div className="header__actions">
+              <button
+                type="button"
+                className="header__burger"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                aria-controls="mobile-menu"
+                aria-label={open ? 'Close menu' : 'Open menu'}
+              >
+                <Icon name={open ? 'close' : 'menu'} size={24} />
+              </button>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Mobile drawer */}
       <div
@@ -161,9 +208,6 @@ export default function Navbar() {
         </nav>
 
         <div className="drawer__foot">
-          <Link href="/quote/" className="btn btn--gold btn--block">
-            Get a Quote
-          </Link>
           <div className="drawer__contact">
             {tel && (
               <a href={tel} className="btn btn--outline btn--sm">

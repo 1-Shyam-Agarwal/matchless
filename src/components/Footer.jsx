@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Icon from './Icon';
-import { categories } from '@/data/categories';
+import { shopCategories } from '@/data/shopCategories';
 import {
   site,
   contact,
@@ -20,35 +20,35 @@ export default function Footer() {
 
   return (
     <footer className="footer on-dark">
-      {/* Closing call to action */}
+      {/* Closing call to action — a rounded card on the page background */}
       <div className="footer__cta">
-        <div className="container footer__cta-inner">
-          <div>
-            <p className="eyebrow">Start a conversation</p>
-            <h2>Tell us what you need to gift.</h2>
-            <p className="lead">
-              Share your quantity, occasion and budget — we will come back with
-              options and bulk pricing.
-            </p>
-          </div>
-          <div className="btn-row">
-            <Link href="/quote/" className="btn btn--gold">
-              Get a Quote <Icon name="arrowRight" size={18} />
-            </Link>
-            {wa ? (
-              <a
-                href={wa}
-                className="btn btn--outline-light"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon name="whatsapp" size={18} /> WhatsApp Us
-              </a>
-            ) : (
-              <Link href="/contact/" className="btn btn--outline-light">
-                Contact Us
+        <div className="container">
+          <div className="footer__cta-inner">
+            <div>
+              <p className="footer__cta-kicker">Start a conversation</p>
+              <h2>
+                Tell us what you need to <em>gift</em>
+              </h2>
+              <p className="footer__cta-lead">
+                Share your quantity, occasion and budget — we will come back
+                with options and bulk pricing.
+              </p>
+            </div>
+            <div className="footer__cta-actions">
+              {wa && (
+                <a
+                  href={wa}
+                  className="footer__cta-btn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon name="whatsapp" size={18} /> WhatsApp Us
+                </a>
+              )}
+              <Link href="/contact/" className="footer__cta-link">
+                Send an enquiry
               </Link>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -100,16 +100,13 @@ export default function Footer() {
                 <Link href={l.href}>{l.label}</Link>
               </li>
             ))}
-            <li>
-              <Link href="/quote/">Get a Quote</Link>
-            </li>
           </ul>
         </nav>
 
         <nav className="footer__col" aria-label="Product categories">
           <h3>Categories</h3>
           <ul>
-            {categories.slice(0, 8).map((c) => (
+            {shopCategories.map((c) => (
               <li key={c.slug}>
                 <Link href={`/categories/${c.slug}/`}>{c.name}</Link>
               </li>
